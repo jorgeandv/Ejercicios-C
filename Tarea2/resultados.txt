@@ -1,0 +1,79 @@
+Sistema operativo utilizado:
+Description:	Debian GNU/Linux 13 (trixie)
+Versión del núcleo de linux:
+Linux debian13 6.12.101+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.101-1 (2026-08-05) x86_64 GNU/Linux
+==== run-san ====
+gcc -g -DSAN=1 -fsanitize=address -fsanitize=undefined -DSANITIZE -Wall -Werror -pedantic -std=c18 -Wno-unused-function  test-desescapar.c desescapar.c test-util.c -lm -o desescapar.bin-san
+./desescapar.bin-san
+Tests unitarios
+Tests de desescapar: 190 casos
+Tests de desescapado: 190 casos
+Tests con strings de 1048576 bytes
+  patron a
+  patron \x41
+  patron \n
+  patron \q
+Test de uso de memoria de desescapado
+Aprobado
+Tests masivos
+------------------------------------------
+Benchmark de desescapar
+Tiempo de cpu usado por su version: 3 milisegundos
+------------------------------------------
+Benchmark de desescapado
+Tiempo de cpu usado por su version: 5 milisegundos
+Aprobado
+Felicitaciones: aprobo los tests de este modo de ejecucion
+==== run-g ====
+gcc -g -Wall -Werror -pedantic -std=c18 -Wno-unused-function  test-desescapar.c desescapar.c test-util.c -lm -o desescapar.bin-g
+./desescapar.bin-g
+Tests unitarios
+Tests de desescapar: 190 casos
+Tests de desescapado: 190 casos
+Tests con strings de 1048576 bytes
+  patron a
+  patron \x41
+  patron \n
+  patron \q
+Test de uso de memoria de desescapado
+Aprobado
+Tests masivos
+------------------------------------------
+Benchmark de desescapar
+Tiempo de cpu usado por su version: 2 milisegundos
+------------------------------------------
+Benchmark de desescapado
+Tiempo de cpu usado por su version: 3 milisegundos
+Aprobado
+Felicitaciones: aprobo los tests de este modo de ejecucion
+==== run ====
+gcc -O -DOPT=1 -Wall -Werror -pedantic -std=c18 -Wno-unused-function  test-desescapar.c desescapar.c test-util.c -lm -o desescapar.bin
+Midiendo cuanto demora la solucion del profesor
+rm -f tiempo-ref.txt
+chmod +x prof.ref-x86_64
+./prof.ref-x86_64 ref > /dev/null
+Tiempos de referencia =  66 122
+Verificando y comparando con su solucion
+./desescapar.bin 66 122
+Tests unitarios
+Tests de desescapar: 190 casos
+Tests de desescapado: 190 casos
+Tests con strings de 4194304 bytes
+  patron a
+  patron \x41
+  patron \n
+  patron \q
+Test de uso de memoria de desescapado
+Aprobado
+------------------------------------------
+Benchmark de desescapar
+Tiempo de cpu usado por su version: 63 milisegundos
+Tiempo de la version del profesor : 66 milisegundos
+Porcentaje de sobrecosto: -4 %
+------------------------------------------
+Benchmark de desescapado
+Tiempo de cpu usado por su version: 115 milisegundos
+Tiempo de la version del profesor : 122 milisegundos
+Porcentaje de sobrecosto: -5 %
+Aprobado
+Felicitaciones: aprobo los tests de este modo de ejecucion
