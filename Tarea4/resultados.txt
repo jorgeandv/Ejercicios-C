@@ -1,0 +1,494 @@
+Sistema operativo utilizado
+Description:	Debian GNU/Linux 13 (trixie)
+Versión del núcleo de linux:
+Linux debian13 6.12.101+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.101-1 (2026-08-05) x86_64 GNU/Linux
+==== run-san ====
+gcc -g -DSAN=1 -fsanitize=address -fsanitize=undefined -Wall -Werror -pedantic -std=c18 -Wno-unused-function  definir.c pss.c -lm -o definir.bin-san
+bash test-definir.sh definir.bin-san
+-----------------------------------------------------------
+Test de una insercion en un diccionario vacio
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht casa edificacion en donde vive una familia
+-----------------------------------------------------------
+Test de inserciones en filas distintas
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht casa edificacion en donde vive una familia
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht alimento sustancia que se ingiere para nutrirse
+-----------------------------------------------------------
+Test de una colision: ambas llaves van a la fila 5
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht celular telefono que cabe en el bolsillo
+-----------------------------------------------------------
+Test de un sondeo lineal sobre varias filas ocupadas
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht celular telefono que cabe en el bolsillo
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht bolsillo bolsa pequena cosida en la ropa
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht byte unidad de informacion de ocho bits
+-----------------------------------------------------------
+Test de un sondeo que da la vuelta al final del archivo
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht perro mamifero domestico con olfato muy fino
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht lluvia agua que cae de las nubes
+-----------------------------------------------------------
+Test de un sondeo que da la vuelta desde la ultima fila
+Diccionario vacio de 8 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht canario ave amarilla que canta
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht puntero flecha que apunta a donde Ud. cree
+-----------------------------------------------------------
+Test que ocupa la ultima fila libre de la tabla
+Diccionario vacio de 3 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht techo parte superior de una construccion
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht perro mamifero domestico con olfato muy fino
+-----------------------------------------------------------
+Test de insercion en un diccionario completamente lleno
+Diccionario vacio de 3 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht techo parte superior de una construccion
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht perro mamifero domestico con olfato muy fino
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht casa edificacion en donde vive una familia
+tmp-test/dicc.ht: el diccionario esta lleno
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de un diccionario de una sola fila
+Diccionario vacio de 1 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht byte unidad de informacion de ocho bits
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht bit byte que todavia esta en formacion
+tmp-test/dicc.ht: el diccionario esta lleno
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave que ya se encuentra en su propia fila
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht casa edificacion en donde vive una familia
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht casa otra definicion cualquiera
+La llave casa ya se encuentra en el diccionario
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave que ya se encuentra, detectada al sondear
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht celular telefono que cabe en el bolsillo
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht celular otra definicion cualquiera
+La llave celular ya se encuentra en el diccionario
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave mas una definicion que ocupan exactamente 99 bytes
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht byte xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-----------------------------------------------------------
+Test de una llave mas una definicion que ocupan 100 bytes
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht byte xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Tamanno de la llave mas tamanno de la definicion (100) exceden maximo permitido (99)
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave mas una definicion muy largas
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+Tamanno de la llave mas tamanno de la definicion (120) exceden maximo permitido (99)
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una definicion vacia
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht byte 
+-----------------------------------------------------------
+Test de una llave de un solo byte
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht a primera letra del abecedario
+-----------------------------------------------------------
+Test de una llave y una definicion con espacios en blanco
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht byte nulo el que nunca esta cuando uno lo busca
+-----------------------------------------------------------
+Test de un diccionario que se va llenando
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave1 definicion numero 1
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave2 definicion numero 2
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave3 definicion numero 3
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave4 definicion numero 4
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave5 definicion numero 5
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave6 definicion numero 6
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave7 definicion numero 7
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave8 definicion numero 8
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave9 definicion numero 9
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave10 definicion numero 10
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave11 definicion numero 11
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave12 definicion numero 12
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave13 definicion numero 13
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave14 definicion numero 14
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht llave15 definicion numero 15
+-----------------------------------------------------------
+Test de uso incorrecto de parametros
+Ejecutando: ./definir.bin-san 
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht byte
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht byte unidad de informacion sobra
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test con un diccionario inexistente
+Ejecutando: ./definir.bin-san tmp-test/nodicc.ht byte unidad de informacion de ocho bits
+tmp-test/nodicc.ht: No such file or directory
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test con un diccionario sin permiso de lectura
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht byte unidad de informacion de ocho bits con permisos 222
+-----------------------------------------------------------
+Test con un diccionario sin permiso de escritura
+Ejecutando: ./definir.bin-san tmp-test/dicc.ht byte unidad de informacion de ocho bits con permisos 444
+tmp-test/dicc.ht: Operation not permitted
+
+Bien.  Se diagnostico correctamente el error.
+
+Felicitaciones: aprobo todos los tests unitarios
+==== run-g ====
+gcc -g -Wall -Werror -pedantic -std=c18 -Wno-unused-function  definir.c pss.c -lm -o definir.bin-g
+bash test-definir.sh definir.bin-g
+-----------------------------------------------------------
+Test de una insercion en un diccionario vacio
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht casa edificacion en donde vive una familia
+-----------------------------------------------------------
+Test de inserciones en filas distintas
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht casa edificacion en donde vive una familia
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht alimento sustancia que se ingiere para nutrirse
+-----------------------------------------------------------
+Test de una colision: ambas llaves van a la fila 5
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht celular telefono que cabe en el bolsillo
+-----------------------------------------------------------
+Test de un sondeo lineal sobre varias filas ocupadas
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht celular telefono que cabe en el bolsillo
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht bolsillo bolsa pequena cosida en la ropa
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht byte unidad de informacion de ocho bits
+-----------------------------------------------------------
+Test de un sondeo que da la vuelta al final del archivo
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht perro mamifero domestico con olfato muy fino
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht lluvia agua que cae de las nubes
+-----------------------------------------------------------
+Test de un sondeo que da la vuelta desde la ultima fila
+Diccionario vacio de 8 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht canario ave amarilla que canta
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht puntero flecha que apunta a donde Ud. cree
+-----------------------------------------------------------
+Test que ocupa la ultima fila libre de la tabla
+Diccionario vacio de 3 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht techo parte superior de una construccion
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht perro mamifero domestico con olfato muy fino
+-----------------------------------------------------------
+Test de insercion en un diccionario completamente lleno
+Diccionario vacio de 3 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht techo parte superior de una construccion
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht perro mamifero domestico con olfato muy fino
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht casa edificacion en donde vive una familia
+tmp-test/dicc.ht: el diccionario esta lleno
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de un diccionario de una sola fila
+Diccionario vacio de 1 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht byte unidad de informacion de ocho bits
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht bit byte que todavia esta en formacion
+tmp-test/dicc.ht: el diccionario esta lleno
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave que ya se encuentra en su propia fila
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht casa edificacion en donde vive una familia
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht casa otra definicion cualquiera
+La llave casa ya se encuentra en el diccionario
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave que ya se encuentra, detectada al sondear
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht celular telefono que cabe en el bolsillo
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht celular otra definicion cualquiera
+La llave celular ya se encuentra en el diccionario
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave mas una definicion que ocupan exactamente 99 bytes
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht byte xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-----------------------------------------------------------
+Test de una llave mas una definicion que ocupan 100 bytes
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht byte xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Tamanno de la llave mas tamanno de la definicion (100) exceden maximo permitido (99)
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave mas una definicion muy largas
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+Tamanno de la llave mas tamanno de la definicion (120) exceden maximo permitido (99)
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una definicion vacia
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht byte 
+-----------------------------------------------------------
+Test de una llave de un solo byte
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht a primera letra del abecedario
+-----------------------------------------------------------
+Test de una llave y una definicion con espacios en blanco
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht byte nulo el que nunca esta cuando uno lo busca
+-----------------------------------------------------------
+Test de un diccionario que se va llenando
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave1 definicion numero 1
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave2 definicion numero 2
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave3 definicion numero 3
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave4 definicion numero 4
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave5 definicion numero 5
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave6 definicion numero 6
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave7 definicion numero 7
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave8 definicion numero 8
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave9 definicion numero 9
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave10 definicion numero 10
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave11 definicion numero 11
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave12 definicion numero 12
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave13 definicion numero 13
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave14 definicion numero 14
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht llave15 definicion numero 15
+-----------------------------------------------------------
+Test de uso incorrecto de parametros
+Ejecutando: ./definir.bin-g 
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht byte
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht byte unidad de informacion sobra
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test con un diccionario inexistente
+Ejecutando: ./definir.bin-g tmp-test/nodicc.ht byte unidad de informacion de ocho bits
+tmp-test/nodicc.ht: No such file or directory
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test con un diccionario sin permiso de lectura
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht byte unidad de informacion de ocho bits con permisos 222
+-----------------------------------------------------------
+Test con un diccionario sin permiso de escritura
+Ejecutando: ./definir.bin-g tmp-test/dicc.ht byte unidad de informacion de ocho bits con permisos 444
+tmp-test/dicc.ht: Operation not permitted
+
+Bien.  Se diagnostico correctamente el error.
+
+Felicitaciones: aprobo todos los tests unitarios
+==== run ====
+gcc -O -DOPT=1 -Wall -Werror -pedantic -std=c18 -Wno-unused-function  definir.c pss.c -lm -o definir.bin
+make --no-print-directory PROB=bench bench.bin
+gcc -O -DOPT=1 -Wall -Werror -pedantic -std=c18 -Wno-unused-function  bench.c pss.c -lm -o bench.bin
+*** Tests unitarios ******************************************
+bash test-definir.sh definir.bin
+-----------------------------------------------------------
+Test de una insercion en un diccionario vacio
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht casa edificacion en donde vive una familia
+-----------------------------------------------------------
+Test de inserciones en filas distintas
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht casa edificacion en donde vive una familia
+Ejecutando: ./definir.bin tmp-test/dicc.ht alimento sustancia que se ingiere para nutrirse
+-----------------------------------------------------------
+Test de una colision: ambas llaves van a la fila 5
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin tmp-test/dicc.ht celular telefono que cabe en el bolsillo
+-----------------------------------------------------------
+Test de un sondeo lineal sobre varias filas ocupadas
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin tmp-test/dicc.ht celular telefono que cabe en el bolsillo
+Ejecutando: ./definir.bin tmp-test/dicc.ht bolsillo bolsa pequena cosida en la ropa
+Ejecutando: ./definir.bin tmp-test/dicc.ht byte unidad de informacion de ocho bits
+-----------------------------------------------------------
+Test de un sondeo que da la vuelta al final del archivo
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht perro mamifero domestico con olfato muy fino
+Ejecutando: ./definir.bin tmp-test/dicc.ht lluvia agua que cae de las nubes
+-----------------------------------------------------------
+Test de un sondeo que da la vuelta desde la ultima fila
+Diccionario vacio de 8 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht canario ave amarilla que canta
+Ejecutando: ./definir.bin tmp-test/dicc.ht puntero flecha que apunta a donde Ud. cree
+-----------------------------------------------------------
+Test que ocupa la ultima fila libre de la tabla
+Diccionario vacio de 3 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht techo parte superior de una construccion
+Ejecutando: ./definir.bin tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin tmp-test/dicc.ht perro mamifero domestico con olfato muy fino
+-----------------------------------------------------------
+Test de insercion en un diccionario completamente lleno
+Diccionario vacio de 3 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht techo parte superior de una construccion
+Ejecutando: ./definir.bin tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin tmp-test/dicc.ht perro mamifero domestico con olfato muy fino
+Ejecutando: ./definir.bin tmp-test/dicc.ht casa edificacion en donde vive una familia
+tmp-test/dicc.ht: el diccionario esta lleno
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de un diccionario de una sola fila
+Diccionario vacio de 1 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht byte unidad de informacion de ocho bits
+Ejecutando: ./definir.bin tmp-test/dicc.ht bit byte que todavia esta en formacion
+tmp-test/dicc.ht: el diccionario esta lleno
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave que ya se encuentra en su propia fila
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht casa edificacion en donde vive una familia
+Ejecutando: ./definir.bin tmp-test/dicc.ht casa otra definicion cualquiera
+La llave casa ya se encuentra en el diccionario
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave que ya se encuentra, detectada al sondear
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht gato mamifero domestico de habitos nocturnos
+Ejecutando: ./definir.bin tmp-test/dicc.ht celular telefono que cabe en el bolsillo
+Ejecutando: ./definir.bin tmp-test/dicc.ht celular otra definicion cualquiera
+La llave celular ya se encuentra en el diccionario
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave mas una definicion que ocupan exactamente 99 bytes
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht byte xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-----------------------------------------------------------
+Test de una llave mas una definicion que ocupan 100 bytes
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht byte xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Tamanno de la llave mas tamanno de la definicion (100) exceden maximo permitido (99)
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una llave mas una definicion muy largas
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+Tamanno de la llave mas tamanno de la definicion (120) exceden maximo permitido (99)
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test de una definicion vacia
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht byte 
+-----------------------------------------------------------
+Test de una llave de un solo byte
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht a primera letra del abecedario
+-----------------------------------------------------------
+Test de una llave y una definicion con espacios en blanco
+Diccionario vacio de 7 filas
+Ejecutando: ./definir.bin tmp-test/dicc.ht byte nulo el que nunca esta cuando uno lo busca
+-----------------------------------------------------------
+Test de un diccionario que se va llenando
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave1 definicion numero 1
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave2 definicion numero 2
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave3 definicion numero 3
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave4 definicion numero 4
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave5 definicion numero 5
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave6 definicion numero 6
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave7 definicion numero 7
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave8 definicion numero 8
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave9 definicion numero 9
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave10 definicion numero 10
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave11 definicion numero 11
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave12 definicion numero 12
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave13 definicion numero 13
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave14 definicion numero 14
+Ejecutando: ./definir.bin tmp-test/dicc.ht llave15 definicion numero 15
+-----------------------------------------------------------
+Test de uso incorrecto de parametros
+Ejecutando: ./definir.bin 
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+Ejecutando: ./definir.bin tmp-test/dicc.ht
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+Ejecutando: ./definir.bin tmp-test/dicc.ht byte
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+Ejecutando: ./definir.bin tmp-test/dicc.ht byte unidad de informacion sobra
+Uso: ./definir <diccionario> <llave> <definicion>
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test con un diccionario inexistente
+Ejecutando: ./definir.bin tmp-test/nodicc.ht byte unidad de informacion de ocho bits
+tmp-test/nodicc.ht: No such file or directory
+
+Bien.  Se diagnostico correctamente el error.
+-----------------------------------------------------------
+Test con un diccionario sin permiso de lectura
+Ejecutando: ./definir.bin tmp-test/dicc.ht byte unidad de informacion de ocho bits con permisos 222
+-----------------------------------------------------------
+Test con un diccionario sin permiso de escritura
+Ejecutando: ./definir.bin tmp-test/dicc.ht byte unidad de informacion de ocho bits con permisos 444
+tmp-test/dicc.ht: Operation not permitted
+
+Bien.  Se diagnostico correctamente el error.
+
+Felicitaciones: aprobo todos los tests unitarios
+*** Benchmark ************************************************
+./bench.bin ./prof.ref-x86_64 1000000 300
+Intento= 1
+Construyendo 2 diccionarios vacios de 1000000 lineas
+Midiendo tiempo del binario del profesor con 300 inserciones
+Ejecutando comando: ./prof.ref-x86_64 tmp-test/big-ref.ht llave100 "definicion numero 100"     1> /dev/null 2> /dev/null
+Ejecutando comando: ./prof.ref-x86_64 tmp-test/big-ref.ht llave200 "definicion numero 200"     1> /dev/null 2> /dev/null
+Ejecutando comando: ./prof.ref-x86_64 tmp-test/big-ref.ht llave300 "definicion numero 300"     1> /dev/null 2> /dev/null
+Tiempo= 1626 milisegundos
+Midiendo tiempo de su solucion con 300 inserciones
+Ejecutando comando: ./definir.bin tmp-test/big-mio.ht llave100 "definicion numero 100"     1> /dev/null 2> /dev/null
+Ejecutando comando: ./definir.bin tmp-test/big-mio.ht llave200 "definicion numero 200"     1> /dev/null 2> /dev/null
+Ejecutando comando: ./definir.bin tmp-test/big-mio.ht llave300 "definicion numero 300"     1> /dev/null 2> /dev/null
+Tiempo= 1599 milisegundos
+Porcentaje de sobrecosto: -1 %
+Felicitaciones: Aprobo el test de eficiencia
